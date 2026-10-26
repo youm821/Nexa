@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: nexora
+    runtime: node
+    plan: starter          # always-on (the free plan sleeps after 15 min, which would turn the bot off)
+    buildCommand: npm install
+    startCommand: node modbot.mjs
+    healthCheckPath: /healthz
+    disk:                  # keeps warnings and settings across restarts and deploys
+      name: nexora-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: TOKEN         # your Yapper bot token (you'll be asked for it)
+        sync: false
+      - key: OWNER_PASSWORD  # password for yoursite.onrender.com/owner
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: MODBOT_DATA
+        value: /data/modbot_data.json
